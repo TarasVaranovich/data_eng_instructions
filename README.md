@@ -11,5 +11,9 @@ python main.py
 For testing:
 pip install nose
 pip install pytest
+-> restart ide -> invalidate caches
 
 Run pytest in bash
+
+For pyspark: - install java 17
+sdk install java 17.0.11.fx-zulu -> for example
