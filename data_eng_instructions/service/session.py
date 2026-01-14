@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession
 
 
-def get_spark_session_csv() -> SparkSession:
+def make_csv_local() -> SparkSession:
     spark = SparkSession.builder \
         .appName("CSV session") \
         .master("local[*]") \
