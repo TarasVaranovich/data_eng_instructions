@@ -4,7 +4,7 @@ from pyspark.sql import SparkSession
 
 from data_eng_instructions.constant.relative_path import MAINTENANCE_EVENTS
 from data_eng_instructions.service import session
-from tests.integration.read_file_from_resource import read_file_from_resource
+from data_eng_instructions.service.read_file_from_resource import read_file_from_resource
 from data_eng_instructions.utils.path_utility import entity_from_path
 
 def test():
