@@ -42,4 +42,4 @@ def test_transform_csv_to_type():
     #assert result.schema == MANUFACTURING_FACTORY
     result.show()
 
-    assert result.isEmpty == False
+    assert result.count() == len(sample_data)
