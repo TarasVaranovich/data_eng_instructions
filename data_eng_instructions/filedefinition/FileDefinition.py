@@ -6,13 +6,13 @@ from pyspark.sql.types import StructType
 class FileDefinition(ABC):
 
     def __init__(self, schema: StructType, file: str):
-        self.schema = schema
-        self.path = file
+        self._schema = schema
+        self._path = file
 
     @abstractmethod
-    def schema(self) -> StructType:
+    def get_schema(self) -> StructType:
         pass
 
     @abstractmethod
-    def file(self) -> str:
+    def get_file(self) -> str:
         pass

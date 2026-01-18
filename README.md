@@ -17,3 +17,7 @@ Run pytest in bash
 
 For pyspark: - install java 17
 sdk install java 17.0.11.fx-zulu -> for example
+pip install "pyarrow>=15.0.0"
+pip install "grpcio>=1.48.1"
+pip install "grpcio-status >= 1.48.1"
+pip install "zstandard >= 0.25.0"

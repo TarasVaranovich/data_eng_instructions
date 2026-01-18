@@ -30,4 +30,12 @@ class ManufacturingFactoryDefinition(FileDefinition):
             StructField("operator_id", StringType(), True),
             StructField("workorder_status", StringType(), True)
         ])
+        self._file = "manufacturing_factory_dataset.csv"
+        self._schema = schema
         super().__init__(schema, "manufacturing_factory_dataset.csv")
+
+    def get_schema(self) -> StructType:
+        return self._schema
+
+    def get_file(self) -> str:
+        return self._file
