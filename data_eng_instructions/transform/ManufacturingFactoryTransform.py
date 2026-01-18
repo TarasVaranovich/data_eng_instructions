@@ -92,6 +92,6 @@ def csv_to_type(dataframe: DataFrame) -> DataFrame:
     )
 
 
-def filter_out_invalid_defects(dataframe: DataFrame) -> DataFrame:
+def filter_out_invalid_defects_definitions(dataframe: DataFrame) -> DataFrame:
     assert dataframe.schema == MANUFACTURING_FACTORY_CSV
-    return dataframe.filter((col("defect_type").isNotNull() & (col("defect_count") > 0)))
+    return dataframe.filter(~(col("defect_type").isNull() & (col("defects_count") > 0)))

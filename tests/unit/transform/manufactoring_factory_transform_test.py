@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 
-from data_eng_instructions.transform.ManufacturingFactoryTransform import csv_to_type, filter_out_invalid_defects
+from data_eng_instructions.transform.ManufacturingFactoryTransform import csv_to_type, filter_out_invalid_defects_definitions
 from data_eng_instructions.type.ManufacturingFactory import MANUFACTURING_FACTORY_CSV
 
 valid_row = [
@@ -77,13 +77,13 @@ def test_transform_csv_to_type():
     assert result.count() == len(valid_row)
 
 
-def test_filter_out_invalid_defects():
-    spark = SparkSession.builder.appName("Testing CSV to Type transform").getOrCreate()
+def test_filter_out_invalid_defects_definitions():
+    spark = SparkSession.builder.appName("Testing Defects validation transform").getOrCreate()
 
     sample_data = valid_row + defect_example
     df = spark.createDataFrame(sample_data, MANUFACTURING_FACTORY_CSV)
-    result = df.transform(filter_out_invalid_defects)
+    result = df.transform(filter_out_invalid_defects_definitions)
     assert result.schema == MANUFACTURING_FACTORY_CSV
     result.show()
 
-    assert result.count() == len(sample_data)
+    assert result.count() == len(valid_row)
