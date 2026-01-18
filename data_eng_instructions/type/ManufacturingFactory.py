@@ -1,0 +1,57 @@
+from pyspark.sql.types import StructType, StructField, StringType, TimestampType, IntegerType, FloatType, DateType
+
+MANUFACTURING_FACTORY_CSV = StructType([
+    StructField("timestamp", StringType(), True),
+    StructField("factory_id", StringType(), True),
+    StructField("line_id", StringType(), True),
+    StructField("shift", StringType(), True),
+    StructField("product_id", StringType(), True),
+    StructField("order_id", StringType(), True),
+    StructField("planned_qty", StringType(), True),
+    StructField("produced_qty", StringType(), True),
+    StructField("scrap_qty", StringType(), True),
+    StructField("defects_count", StringType(), True),
+    StructField("defect_type", StringType(), True),
+    StructField("cycle_time_s", StringType(), True),
+    StructField("oee", StringType(), True),
+    StructField("availability", StringType(), True),
+    StructField("performance", StringType(), True),
+    StructField("quality", StringType(), True),
+    StructField("machine_state", StringType(), True),
+    StructField("downtime_reason", StringType(), True),
+    StructField("maintenance_type", StringType(), True),
+    StructField("maintenance_due_date", StringType(), True),
+    StructField("vibration_mm_s", StringType(), True),
+    StructField("temperature_c", StringType(), True),
+    StructField("pressure_bar", StringType(), True),
+    StructField("operator_id", StringType(), True),
+    StructField("workorder_status", StringType(), True)
+])
+
+MANUFACTURING_FACTORY = StructType([
+    StructField("timestamp", TimestampType(), False),
+    StructField("factory_id", StringType(), False),
+    StructField("line_id", StringType(), False),
+    StructField("shift", StringType(), False), # ENUM
+    StructField("product_id", StringType(), False),
+    StructField("order_id", StringType(), False),
+    StructField("planned_qty", IntegerType(), False),
+    StructField("produced_qty", IntegerType(), False),
+    StructField("scrap_qty", IntegerType(), False),
+    StructField("defects_count", IntegerType(), False),
+    StructField("defect_type", StringType(), True), # enum
+    StructField("cycle_time_s", FloatType(), False),
+    StructField("oee", FloatType(), False),
+    StructField("availability", FloatType(), False),
+    StructField("performance", FloatType(), False),
+    StructField("quality", FloatType(), False),
+    StructField("machine_state", StringType(), False), # enum
+    StructField("downtime_reason", StringType(), True), # enum
+    StructField("maintenance_type", StringType(), False), # enum
+    StructField("maintenance_due_date", DateType(), False),
+    StructField("vibration_mm_s", FloatType(), False),
+    StructField("temperature_c", FloatType(), False),
+    StructField("pressure_bar", FloatType(), False),
+    StructField("operator_id", StringType(), False),
+    StructField("workorder_status", StringType(), False) # enum
+])
