@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession
 
 from data_eng_instructions.transform.ManufacturingFactoryTransform import csv_to_type
-from data_eng_instructions.type.ManufacturingFactory import MANUFACTURING_FACTORY_CSV
+from data_eng_instructions.type.ManufacturingFactory import MANUFACTURING_FACTORY_CSV, MANUFACTURING_FACTORY
 
 
 def test_transform_csv_to_type():
@@ -39,5 +39,7 @@ def test_transform_csv_to_type():
 
     df = spark.createDataFrame(sample_data, MANUFACTURING_FACTORY_CSV)
     result = df.transform(csv_to_type)
+    #assert result.schema == MANUFACTURING_FACTORY
+    result.show()
 
     assert result.isEmpty == False
