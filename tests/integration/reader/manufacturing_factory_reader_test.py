@@ -10,7 +10,7 @@ def test():
     manufacturing_factory_definition: ManufacturingFactoryDefinition = ManufacturingFactoryDefinition()
     reader: ManufacturingFactoryReader = \
         ManufacturingFactoryReader(session, manufacturing_factory_definition)
-    result: DataFrame = reader.read()
+    result: DataFrame = reader.read_csv_batch()
     assert result.isEmpty() is False
     result.show(10)
     session.stop()
