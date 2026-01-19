@@ -1,7 +1,7 @@
 from pyspark.sql.types import StructType
 
 from data_eng_instructions.filedefinition.FileDefinition import FileDefinition
-from data_eng_instructions.type.ManufacturingFactory import MANUFACTURING_FACTORY_CSV
+from data_eng_instructions.schema.ManufacturingFactory import MANUFACTURING_FACTORY_CSV
 
 
 class ManufacturingFactoryDefinition(FileDefinition):
