@@ -3,7 +3,7 @@ from pyspark.sql import SparkSession
 
 from data_eng_instructions.schema.file.ManufacturingFactory import MANUFACTURING_FACTORY_CSV
 from data_eng_instructions.writer.ManufactoringFactoryWriter import ManufacturingFactoryWriter
-from tests.stub.test_data import VALID_ROW
+from tests.stub.ManufacturingFactoryData import VALID_ROW
 
 DIR: str = ""
 
