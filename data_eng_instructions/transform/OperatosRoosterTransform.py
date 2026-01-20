@@ -1,7 +1,7 @@
 from pyspark.sql import DataFrame
 from pyspark.sql.functions import *
 
-from data_eng_instructions.schema.file.OperatorsRooster import OPERATORS_ROOSTER_CSV
+from data_eng_instructions.schema.file.OperatorsRooster import OPERATORS_ROOSTER_CSV, OPERATORS_ROOSTER
 
 
 def csv_to_type(dataframe: DataFrame) -> DataFrame:
@@ -32,4 +32,4 @@ def csv_to_type(dataframe: DataFrame) -> DataFrame:
         "hourly_rate_eur",
         "reliability_score"
     )
-    )
+    ).toDF(*OPERATORS_ROOSTER.fieldNames())

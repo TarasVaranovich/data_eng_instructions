@@ -2,7 +2,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql.functions import *
 from pyspark.sql.types import *
 
-from data_eng_instructions.schema.file.ManufacturingFactory import MANUFACTURING_FACTORY_CSV
+from data_eng_instructions.schema.file.ManufacturingFactory import MANUFACTURING_FACTORY_CSV, MANUFACTURING_FACTORY
 
 
 def csv_to_type(dataframe: DataFrame) -> DataFrame:
@@ -89,8 +89,7 @@ def csv_to_type(dataframe: DataFrame) -> DataFrame:
         "operator_id",
         "workorder_status"
     )
-    )
-
+    ).toDF(*MANUFACTURING_FACTORY.fieldNames())
 
 def filter_out_invalid_defects_definitions(dataframe: DataFrame) -> DataFrame:
     assert dataframe.schema == MANUFACTURING_FACTORY_CSV

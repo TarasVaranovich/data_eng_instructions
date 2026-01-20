@@ -32,26 +32,26 @@ MANUFACTURING_FACTORY = StructType([
     StructField("timestamp", TimestampType(), False),
     StructField("factory_id", StringType(), False),
     StructField("line_id", StringType(), False),
-    StructField("shift", StringType(), False), # ENUM
+    StructField("shift", StringType(), False),
     StructField("product_id", StringType(), False),
     StructField("order_id", StringType(), False),
     StructField("planned_qty", IntegerType(), False),
     StructField("produced_qty", IntegerType(), False),
     StructField("scrap_qty", IntegerType(), False),
     StructField("defects_count", IntegerType(), False),
-    StructField("defect_type", StringType(), True), # enum
+    StructField("defect_type", StringType(), True),
     StructField("cycle_time_s", FloatType(), False),
     StructField("oee", FloatType(), False),
     StructField("availability", FloatType(), False),
     StructField("performance", FloatType(), False),
     StructField("quality", FloatType(), False),
-    StructField("machine_state", StringType(), False), # enum
-    StructField("downtime_reason", StringType(), True), # enum
-    StructField("maintenance_type", StringType(), False), # enum
+    StructField("machine_state", StringType(), False),
+    StructField("downtime_reason", StringType(), True),
+    StructField("maintenance_type", StringType(), False),
     StructField("maintenance_due_date", DateType(), False),
     StructField("vibration_mm_s", FloatType(), False),
     StructField("temperature_c", FloatType(), False),
     StructField("pressure_bar", FloatType(), False),
     StructField("operator_id", StringType(), False),
-    StructField("workorder_status", StringType(), False) # enum
+    StructField("workorder_status", StringType(), False)
 ])
