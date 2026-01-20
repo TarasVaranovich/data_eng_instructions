@@ -1,18 +1,23 @@
 from pyspark.sql import SparkSession
 
-# Create Spark session (local mode)
+from data_eng_instructions.pipeline.Pipeline import Pipeline
+from data_eng_instructions.pipeline.PipelineResolver import PipelineResolver
+
 spark = SparkSession.builder \
-    .appName("CSV SQL Example") \
+    .appName("Data Eng Instructions") \
     .master("local[*]") \
     .getOrCreate()
 
-df = spark.read \
-    .option("header", True) \
-    .option("inferSchema", True) \
-    .csv("people.csv")
+"""
+    Migration orchestration:
+    1 stage - downtime_reason, product, order, machine_state, 
+        work_order_status, defect, line_factory, shift
+    2 stage - operator, shift
+    3 stage - manufacturing_factory
+"""
+pipeline_name: str = "shift"
 
-# Show DataFrame
-df.show()
+pipeline: Pipeline = PipelineResolver.resolve(pipeline_name, spark)
+pipeline.run()
 
-# Stop Spark
 spark.stop()
