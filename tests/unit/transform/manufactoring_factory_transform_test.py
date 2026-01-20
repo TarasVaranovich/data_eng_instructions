@@ -10,7 +10,7 @@ def test_transform_csv_to_type():
 
     df = spark.createDataFrame(VALID_ROW, MANUFACTURING_FACTORY_CSV)
     result = df.transform(csv_to_type)
-    #assert result.schema == MANUFACTURING_FACTORY
+    assert result.schema == MANUFACTURING_FACTORY
     result.show()
 
     assert result.count() == len(VALID_ROW)

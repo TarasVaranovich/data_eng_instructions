@@ -10,7 +10,7 @@ def test_transform_csv_to_type():
 
     df = spark.createDataFrame(VALID_ROW, OPERATORS_ROOSTER_CSV)
     result = df.transform(csv_to_type)
-    #assert result.schema == OPERATORS_ROOSTER
+    assert result.schema == OPERATORS_ROOSTER
     result.show()
 
     assert result.count() == len(VALID_ROW)

@@ -7,7 +7,7 @@ from data_eng_instructions.schema.file.ManufacturingFactory import MANUFACTURING
 
 def csv_to_type(dataframe: DataFrame) -> DataFrame:
     assert dataframe.schema == MANUFACTURING_FACTORY_CSV
-    return (dataframe
+    transformed = (dataframe
     .withColumn("timestamp",
                 when(col("timestamp").isNull() | (trim(col("timestamp")) == ""),
                      raise_error("REQUIRED: timestamp cannot be null/empty"))
@@ -89,7 +89,13 @@ def csv_to_type(dataframe: DataFrame) -> DataFrame:
         "operator_id",
         "workorder_status"
     )
-    ).toDF(*MANUFACTURING_FACTORY.fieldNames())
+    )
+    spark = dataframe.sparkSession
+    return spark.createDataFrame(
+        transformed.rdd,
+        MANUFACTURING_FACTORY
+    )
+
 
 def filter_out_invalid_defects_definitions(dataframe: DataFrame) -> DataFrame:
     assert dataframe.schema == MANUFACTURING_FACTORY_CSV
