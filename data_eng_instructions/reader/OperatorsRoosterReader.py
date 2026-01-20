@@ -1,15 +1,15 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.classic.dataframe import DataFrame
-from pyspark.sql.types import StructType, TimestampType
+from pyspark.sql.types import StructType, DateType
 
-from data_eng_instructions.filedefinition import ManufacturingFactoryDefinition
+from data_eng_instructions.filedefinition import OperatorsRoosterDefinition
 from data_eng_instructions.reader.EntityReader import EntityReader
 from data_eng_instructions.utils.path_utility import project_root
 
 
-class ManufacturingFactoryReader(EntityReader[TimestampType]):
+class OperatorsRoosterReader(EntityReader[DateType]):
 
-    def __init__(self, session: SparkSession, file_definition: ManufacturingFactoryDefinition):
+    def __init__(self, session: SparkSession, file_definition: OperatorsRoosterDefinition):
         self.session = session
         self.file_definition = file_definition
         super().__init__(session, file_definition)
@@ -24,5 +24,5 @@ class ManufacturingFactoryReader(EntityReader[TimestampType]):
             .schema(schema) \
             .csv(f"{project_root()}{"/resources/"}{file}")
 
-    def read_range(self, from_ts: TimestampType, to_ts: TimestampType) -> DataFrame:
+    def read_range(self, from_ts: DateType, to_ts: DateType) -> DataFrame:
         pass

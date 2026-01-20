@@ -2,12 +2,13 @@ from abc import ABC, abstractmethod
 
 from pyspark.sql import SparkSession
 from pyspark.sql.classic.dataframe import DataFrame
-from pyspark.sql.types import TimestampType
 
 from data_eng_instructions.filedefinition.FileDefinition import FileDefinition
+from typing import Generic, TypeVar
 
+T = TypeVar('T')
 
-class EntityReader(ABC):
+class EntityReader(Generic[T], ABC):
 
     def __init__(self, session: SparkSession, file_definition: FileDefinition):
         self._session = session
@@ -29,5 +30,5 @@ class EntityReader(ABC):
     """
 
     @abstractmethod
-    def read_range(self, from_ts: TimestampType, to_ts: TimestampType) -> DataFrame:
+    def read_range(self, from_ts: T, to_ts: T) -> DataFrame:
         pass
