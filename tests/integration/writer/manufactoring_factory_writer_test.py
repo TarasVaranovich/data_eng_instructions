@@ -1,7 +1,7 @@
 from pandas import DataFrame
 from pyspark.sql import SparkSession
 
-from data_eng_instructions.schema.ManufacturingFactory import MANUFACTURING_FACTORY_CSV
+from data_eng_instructions.schema.file.ManufacturingFactory import MANUFACTURING_FACTORY_CSV
 from data_eng_instructions.writer.ManufactoringFactoryWriter import ManufacturingFactoryWriter
 from tests.stub.test_data import VALID_ROW
 

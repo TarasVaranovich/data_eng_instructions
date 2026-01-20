@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession
 
 from data_eng_instructions.transform.ManufacturingFactoryTransform import csv_to_type, filter_out_invalid_defects_definitions
-from data_eng_instructions.schema.ManufacturingFactory import MANUFACTURING_FACTORY_CSV
+from data_eng_instructions.schema.file.ManufacturingFactory import MANUFACTURING_FACTORY_CSV
 from tests.stub.test_data import VALID_ROW, DEFECT_EXAMPLE
 
 

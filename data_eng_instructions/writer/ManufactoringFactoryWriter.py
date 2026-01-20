@@ -1,7 +1,7 @@
 from pyspark.sql.classic.dataframe import DataFrame
 from pyspark.sql.types import StructType
 
-from data_eng_instructions.schema.ManufacturingFactory import MANUFACTURING_FACTORY_CSV
+from data_eng_instructions.schema.file.ManufacturingFactory import MANUFACTURING_FACTORY_CSV
 from data_eng_instructions.writer.EntityWriter import EntityWriter
 
 
