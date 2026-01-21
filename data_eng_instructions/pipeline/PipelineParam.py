@@ -14,5 +14,5 @@ class PipelineParam:
     def get_spark(self) -> SparkSession:
         return self.__spark
 
-    def get_result(self) -> FileType:
+    def get_result_type(self) -> FileType:
         return self.__result_type
