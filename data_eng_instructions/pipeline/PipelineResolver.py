@@ -14,6 +14,7 @@ from data_eng_instructions.pipeline.manufacturing_factory.OperatorPipeline impor
 from data_eng_instructions.pipeline.manufacturing_factory.OrderPipeline import OrderPipeline
 from data_eng_instructions.pipeline.manufacturing_factory.ProductPipeline import ProductPipeline
 from data_eng_instructions.pipeline.manufacturing_factory.ShiftPipeline import ShiftPipeline
+from data_eng_instructions.pipeline.manufacturing_factory.TeamPipeline import TeamPipeline
 from data_eng_instructions.pipeline.manufacturing_factory.WorkOrderStatusPipeline import WorkOrderStatusPipeline
 
 
@@ -46,5 +47,7 @@ class PipelineResolver:
                 return OperatingPeriodDefectPipeline(param)
             case "operating_period_downtime_reason":
                 return OperatingPeriodDownTimeReasonPipeline(param)
+            case "team":
+                return TeamPipeline(param)
             case _:
                 raise ValueError(f"Unknown pipeline: {pipeline_name}")
