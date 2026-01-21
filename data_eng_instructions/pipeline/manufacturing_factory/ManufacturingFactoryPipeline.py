@@ -6,6 +6,7 @@ from pyspark.sql.connect.session import SparkSession
 
 from data_eng_instructions.constant.stubs import DEFAULT_ID
 from data_eng_instructions.filedefinition.FileType import FileType
+from data_eng_instructions.filedefinition.line_factory.dwh.LineFactoryDefinitionDWH import LineFactoryDefinitionDWH
 from data_eng_instructions.filedefinition.machinestate.dwh.MachineStateDefinitionDWH import MachineStateDefinitionDWH
 from data_eng_instructions.filedefinition.manufctoringfactory.source.ManufacturingFactoryDefinitionSource import \
     ManufacturingFactoryDefinitionSource
@@ -16,6 +17,7 @@ from data_eng_instructions.filedefinition.workorderstatus.dwh.WorkOrderStatusDef
     WorkOrderStatusDefinitionDWH
 from data_eng_instructions.pipeline.Pipeline import Pipeline
 from data_eng_instructions.pipeline.PipelineParam import PipelineParam
+from data_eng_instructions.reader.LineFactoryReader import LineFactoryReader
 from data_eng_instructions.reader.MachineStateReader import MachineStateReader
 from data_eng_instructions.reader.ManufacturingFactoryReader import ManufacturingFactoryReader
 from data_eng_instructions.reader.OrderReader import OrderReader
@@ -63,9 +65,15 @@ class ManufacturingFactoryPipeline(Pipeline):
 
         print("Read shifts:")
         sh_definition: ShiftDefinitionDWH = ShiftDefinitionDWH(file_type)
-        sh_reader: ShiftReader = ShiftReader (spark, sh_definition)
+        sh_reader: ShiftReader = ShiftReader(spark, sh_definition)
         sh_df: DataFrame = sh_reader.read_from_storage()
         sh_df.show(5)
+
+        print("Read line factories:")
+        lf_definition: LineFactoryDefinitionDWH = LineFactoryDefinitionDWH(file_type)
+        lf_reader: LineFactoryReader = LineFactoryReader(spark, lf_definition)
+        lf_df: DataFrame = lf_reader.read_from_storage()
+        lf_df.show(5)
 
         print("Read manufacturing factories:")
         mf_definition: ManufacturingFactoryDefinitionSource = ManufacturingFactoryDefinitionSource()

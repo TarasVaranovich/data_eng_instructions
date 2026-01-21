@@ -18,7 +18,7 @@ spark = SparkSession.builder \
     3 stage - manufacturing_factory
     4 stage - operating_period_defect, operating_period_downtime_reason
 """
-# pipeline_name: str = "shift"
+#pipeline_name: str = "line_factory"
 pipeline_name: str = "manufacturing_factory"
 param: PipelineParam = PipelineParam(spark, FileType.PARQUET)
 pipeline: Pipeline = PipelineResolver.resolve(pipeline_name, param)

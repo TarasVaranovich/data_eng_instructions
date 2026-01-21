@@ -21,3 +21,6 @@ pip install "pyarrow>=15.0.0"
 pip install "grpcio>=1.48.1"
 pip install "grpcio-status >= 1.48.1"
 pip install "zstandard >= 0.25.0"
+
+TODO:
+simplifications: operator not related, many-to-many not related
