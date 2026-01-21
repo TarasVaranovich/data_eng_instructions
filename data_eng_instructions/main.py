@@ -18,7 +18,7 @@ spark = SparkSession.builder \
     3 stage - manufacturing_factory
 """
 pipeline_name: str = "manufacturing_factory"
-#pipeline_name: str = "product"
+#pipeline_name: str = "machine_state"
 param: PipelineParam = PipelineParam(spark, FileType.PARQUET)
 pipeline: Pipeline = PipelineResolver.resolve(pipeline_name, param)
 pipeline.run()

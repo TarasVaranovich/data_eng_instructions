@@ -6,12 +6,14 @@ from pyspark.sql.connect.session import SparkSession
 
 from data_eng_instructions.constant.stubs import DEFAULT_ID
 from data_eng_instructions.filedefinition.FileType import FileType
+from data_eng_instructions.filedefinition.machinestate.dwh.MachineStateDefinitionDWH import MachineStateDefinitionDWH
 from data_eng_instructions.filedefinition.manufctoringfactory.source.ManufacturingFactoryDefinitionSource import \
     ManufacturingFactoryDefinitionSource
 from data_eng_instructions.filedefinition.order.dwh.OrderDefinitionDWH import OrderDefinitionDWH
 from data_eng_instructions.filedefinition.product.dwh.ProductDefinitionDWH import ProductDefinitionDWH
 from data_eng_instructions.pipeline.Pipeline import Pipeline
 from data_eng_instructions.pipeline.PipelineParam import PipelineParam
+from data_eng_instructions.reader.MachineStateReader import MachineStateReader
 from data_eng_instructions.reader.ManufacturingFactoryReader import ManufacturingFactoryReader
 from data_eng_instructions.reader.OrderReader import OrderReader
 from data_eng_instructions.reader.ProductReader import ProductReader
@@ -39,7 +41,12 @@ class ManufacturingFactoryPipeline(Pipeline):
         product_definition: ProductDefinitionDWH = ProductDefinitionDWH(file_type)
         product_reader: ProductReader = ProductReader(spark, product_definition)
         product_df: DataFrame = product_reader.read_from_storage()
-        product_df.show(10)
+
+        print("Read machine states:")
+        ms_definition: MachineStateDefinitionDWH = MachineStateDefinitionDWH(file_type)
+        ms_reader: MachineStateReader = MachineStateReader(spark, ms_definition)
+        ms_df: DataFrame = ms_reader.read_from_storage()
+        ms_df.show(10)
 
         print("Read manufacturing factories:")
         mf_definition: ManufacturingFactoryDefinitionSource = ManufacturingFactoryDefinitionSource()
