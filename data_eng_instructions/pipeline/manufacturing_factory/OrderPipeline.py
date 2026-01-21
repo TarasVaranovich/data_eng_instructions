@@ -31,7 +31,7 @@ class OrderPipeline(Pipeline):
         reader: ManufacturingFactoryReader = \
             ManufacturingFactoryReader(spark, manufacturing_factory_definition)
 
-        team_extractor: KVExtractor = (
+        extractor: KVExtractor = (
             KVExtractor(
                 MANUFACTURING_FACTORY,
                 ORDER,
@@ -40,10 +40,10 @@ class OrderPipeline(Pipeline):
                 "order_natural_key"
             )
         )
-        order_df: DataFrame = ((reader.read_batch()
+        result_df: DataFrame = ((reader.read_batch()
                                 .transform(csv_to_type)
-                                .transform(team_extractor.extract)))
+                                .transform(extractor.extract)))
 
         print("Write orders")
-        order_writer: OrderWriter = OrderWriter(order_df, storage_path())
-        self.write_to_storage(order_writer, "order")
+        writer: OrderWriter = OrderWriter(result_df, storage_path())
+        self.write_to_storage(writer, "order")

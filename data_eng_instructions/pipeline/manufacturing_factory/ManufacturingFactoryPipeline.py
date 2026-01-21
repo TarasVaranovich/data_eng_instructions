@@ -9,10 +9,12 @@ from data_eng_instructions.filedefinition.FileType import FileType
 from data_eng_instructions.filedefinition.manufctoringfactory.source.ManufacturingFactoryDefinitionSource import \
     ManufacturingFactoryDefinitionSource
 from data_eng_instructions.filedefinition.order.dwh.OrderDefinitionDWH import OrderDefinitionDWH
+from data_eng_instructions.filedefinition.product.dwh.ProductDefinitionDWH import ProductDefinitionDWH
 from data_eng_instructions.pipeline.Pipeline import Pipeline
 from data_eng_instructions.pipeline.PipelineParam import PipelineParam
 from data_eng_instructions.reader.ManufacturingFactoryReader import ManufacturingFactoryReader
 from data_eng_instructions.reader.OrderReader import OrderReader
+from data_eng_instructions.reader.ProductReader import ProductReader
 from data_eng_instructions.transform.ManufacturingFactoryTransform import csv_to_type
 
 
@@ -33,6 +35,12 @@ class ManufacturingFactoryPipeline(Pipeline):
         order_reader: OrderReader = OrderReader(spark, order_definition)
         order_df: DataFrame = order_reader.read_from_storage()
 
+        print("Read products:")
+        product_definition: ProductDefinitionDWH = ProductDefinitionDWH(file_type)
+        product_reader: ProductReader = ProductReader(spark, product_definition)
+        product_df: DataFrame = product_reader.read_from_storage()
+        product_df.show(10)
+
         print("Read manufacturing factories:")
         mf_definition: ManufacturingFactoryDefinitionSource = ManufacturingFactoryDefinitionSource()
         mf_df: DataFrame = (ManufacturingFactoryReader(spark, mf_definition)
@@ -51,4 +59,3 @@ class ManufacturingFactoryPipeline(Pipeline):
             )
             .drop("order_natural_key", "od.order_id")
         )
-        mf_df_fact.show(10)
