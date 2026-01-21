@@ -11,6 +11,7 @@ from data_eng_instructions.schema.dwh.Order import ORDER
 from data_eng_instructions.schema.file.ManufacturingFactory import MANUFACTURING_FACTORY
 from data_eng_instructions.transform.KVExtractor import KVExtractor
 from data_eng_instructions.transform.ManufacturingFactoryTransform import csv_to_type
+from data_eng_instructions.utils.path_utility import storage_path
 from data_eng_instructions.writer.OrderWriter import OrderWriter
 
 
@@ -44,5 +45,5 @@ class OrderPipeline(Pipeline):
                                 .transform(team_extractor.extract)))
 
         print("Write orders")
-        order_writer: OrderWriter = OrderWriter(order_df, Pipeline.storage_path())
+        order_writer: OrderWriter = OrderWriter(order_df, storage_path())
         self.write_to_storage(order_writer, "order")

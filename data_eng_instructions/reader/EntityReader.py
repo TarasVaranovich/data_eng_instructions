@@ -48,7 +48,7 @@ class EntityReader(Generic[T], ABC):
             .option("header", True) \
             .option("delimiter", ",") \
             .schema(schema) \
-            .csv(f"{file}")
+            .csv(file)
 
     def read_parquet(self) -> DataFrame:
         session: SparkSession = self._session
@@ -58,3 +58,13 @@ class EntityReader(Generic[T], ABC):
                 .read
                 .schema(schema)
                 .parquet(file))
+
+    def read_from_storage(self) -> DataFrame:
+        file_type: FileType = self._file_definition.get_file_type()
+        match file_type:
+            case FileType.CSV:
+                return self.read_csv()
+            case FileType.PARQUET:
+                return self.read_parquet()
+            case _:
+                raise NotImplementedError(f"No reader of type: {file_type}")
