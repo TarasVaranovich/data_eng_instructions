@@ -11,6 +11,7 @@ from data_eng_instructions.filedefinition.manufctoringfactory.source.Manufacturi
     ManufacturingFactoryDefinitionSource
 from data_eng_instructions.filedefinition.order.dwh.OrderDefinitionDWH import OrderDefinitionDWH
 from data_eng_instructions.filedefinition.product.dwh.ProductDefinitionDWH import ProductDefinitionDWH
+from data_eng_instructions.filedefinition.shift.dwh.ShiftDefinitionDWH import ShiftDefinitionDWH
 from data_eng_instructions.filedefinition.workorderstatus.dwh.WorkOrderStatusDefinitionDWH import \
     WorkOrderStatusDefinitionDWH
 from data_eng_instructions.pipeline.Pipeline import Pipeline
@@ -19,6 +20,7 @@ from data_eng_instructions.reader.MachineStateReader import MachineStateReader
 from data_eng_instructions.reader.ManufacturingFactoryReader import ManufacturingFactoryReader
 from data_eng_instructions.reader.OrderReader import OrderReader
 from data_eng_instructions.reader.ProductReader import ProductReader
+from data_eng_instructions.reader.ShiftReder import ShiftReader
 from data_eng_instructions.reader.WorkOrderStatusReader import WorkOrderStatusReader
 from data_eng_instructions.transform.ManufacturingFactoryTransform import csv_to_type
 
@@ -58,6 +60,12 @@ class ManufacturingFactoryPipeline(Pipeline):
         wos_reader: WorkOrderStatusReader = WorkOrderStatusReader(spark, wos_definition)
         wos_df: DataFrame = wos_reader.read_from_storage()
         wos_df.show(5)
+
+        print("Read shifts:")
+        sh_definition: ShiftDefinitionDWH = ShiftDefinitionDWH(file_type)
+        sh_reader: ShiftReader = ShiftReader (spark, sh_definition)
+        sh_df: DataFrame = sh_reader.read_from_storage()
+        sh_df.show(5)
 
         print("Read manufacturing factories:")
         mf_definition: ManufacturingFactoryDefinitionSource = ManufacturingFactoryDefinitionSource()
