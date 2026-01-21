@@ -19,6 +19,10 @@ class LineFactoryPipeline(Pipeline):
         self._param = param
         super().__init__(param)
 
+    # TODO: more safer and reliable way is 'line and factory' data
+    # TODO: extraction from two sources: 'manufacturing_factory' and 'operators_rooster'
+    # TODO: for now implementation is simplified because of actual data intersection
+    # TODO: between two sources is empty
     def run(self) -> Any:
         print("Extract Line Factory data")
         spark = self._param.get_spark()
