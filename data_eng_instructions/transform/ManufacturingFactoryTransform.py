@@ -59,6 +59,7 @@ def csv_to_type(dataframe: DataFrame) -> DataFrame:
     .withColumn("order_id", trim(col("order_id")))
     .withColumn("machine_state", trim(col("machine_state")))
     .withColumn("maintenance_type", trim(col("maintenance_type")))
+    .withColumn("energy_kwh", col("energy_kwh").cast(FloatType()))
     .withColumn("operator_id", trim(col("operator_id")))
     .withColumn("workorder_status", trim(col("workorder_status")))
 
@@ -86,6 +87,7 @@ def csv_to_type(dataframe: DataFrame) -> DataFrame:
         "vibration_mm_s",
         "temperature_c",
         "pressure_bar",
+        "energy_kwh",
         "operator_id",
         "workorder_status"
     )

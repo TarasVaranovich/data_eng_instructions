@@ -24,6 +24,7 @@ MANUFACTURING_FACTORY_CSV = StructType([
     StructField("vibration_mm_s", StringType(), True),
     StructField("temperature_c", StringType(), True),
     StructField("pressure_bar", StringType(), True),
+    StructField("energy_kwh", StringType(), True),
     StructField("operator_id", StringType(), True),
     StructField("workorder_status", StringType(), True)
 ])
@@ -52,6 +53,7 @@ MANUFACTURING_FACTORY = StructType([
     StructField("vibration_mm_s", FloatType(), False),
     StructField("temperature_c", FloatType(), False),
     StructField("pressure_bar", FloatType(), False),
+    StructField("energy_kwh", FloatType(), False),
     StructField("operator_id", StringType(), False),
     StructField("workorder_status", StringType(), False)
 ])
