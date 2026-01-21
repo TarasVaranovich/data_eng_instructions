@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-from pyspark.sql.connect.session import SparkSession
+from data_eng_instructions.pipeline.PipelineParam import PipelineParam
 
 
 class Pipeline(ABC):
-    def __init__(self, spark: SparkSession):
-        self._spark = spark
+    def __init__(self, param: PipelineParam):
+        self._param = param
 
     @abstractmethod
     def run(self) -> Any:

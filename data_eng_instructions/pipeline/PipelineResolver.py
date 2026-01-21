@@ -1,6 +1,5 @@
-from pyspark.sql.connect.session import SparkSession
-
 from data_eng_instructions.pipeline.Pipeline import Pipeline
+from data_eng_instructions.pipeline.PipelineParam import PipelineParam
 from data_eng_instructions.pipeline.manufacturing_factory.DefectPipeline import DefectPipeline
 from data_eng_instructions.pipeline.manufacturing_factory.DowntimeReasonPipeline import DowntimeReasonPipeline
 from data_eng_instructions.pipeline.manufacturing_factory.LineFactoryPipeline import LineFactoryPipeline
@@ -17,27 +16,27 @@ from data_eng_instructions.pipeline.manufacturing_factory.WorkOrderStatusPipelin
 class PipelineResolver:
 
     @staticmethod
-    def resolve(pipeline_name: str, session: SparkSession) -> Pipeline:
+    def resolve(pipeline_name: str, param: PipelineParam) -> Pipeline:
         match pipeline_name:
             case "defect":
-                return DefectPipeline(session)
+                return DefectPipeline(param)
             case "downtime_reason":
-                return DowntimeReasonPipeline(session)
+                return DowntimeReasonPipeline(param)
             case "line_factory":
-                return LineFactoryPipeline(session)
+                return LineFactoryPipeline(param)
             case "machine_state":
-                return MachineStatePipeline(session)
+                return MachineStatePipeline(param)
             case "manufacturing_factory":
-                return ManufacturingFactoryPipeline(session)
+                return ManufacturingFactoryPipeline(param)
             case "operator":
-                return OperatorPipeline(session)
+                return OperatorPipeline(param)
             case "product":
-                return ProductPipeline(session)
+                return ProductPipeline(param)
             case "order":
-                return OrderPipeline(session)
+                return OrderPipeline(param)
             case "shift":
-                return ShiftPipeline(session)
+                return ShiftPipeline(param)
             case "work_order_status":
-                return WorkOrderStatusPipeline(session)
+                return WorkOrderStatusPipeline(param)
             case _:
                 raise ValueError(f"Unknown pipeline: {pipeline_name}")
