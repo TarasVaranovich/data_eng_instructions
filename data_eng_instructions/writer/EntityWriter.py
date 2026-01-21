@@ -6,10 +6,10 @@ from pyspark.sql.types import StructType
 
 class EntityWriter(ABC):
 
-    def __init__(self, data_frame: DataFrame, dir: str, mode: str, ):
+    def __init__(self, data_frame: DataFrame, root_dir: str, mode: str, ):
         self._data_frame = data_frame
         self._mode = mode
-        self._dir = dir
+        self._root_dir = root_dir
 
     @property
     @abstractmethod
@@ -22,11 +22,11 @@ class EntityWriter(ABC):
          .write
          .mode(self._mode)
          .option("header", "true")
-         .csv(f"{dir}/{file_name}"))
+         .csv(f"{self._root_dir}/{file_name}"))
 
     def write_parquet(self, file_name: str):
         assert self._data_frame.schema == self.schema()
         (self._data_frame
          .write
          .mode(self._mode)
-         .parquet(f"{dir}/{file_name}"))
+         .parquet(f"{self._root_dir}/{file_name}"))
