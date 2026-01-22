@@ -1,0 +1,5 @@
+maintenance_type_id,maintenance_type
+0,Corrective
+1,Preventive
+2,Inspection
+3,Calibration

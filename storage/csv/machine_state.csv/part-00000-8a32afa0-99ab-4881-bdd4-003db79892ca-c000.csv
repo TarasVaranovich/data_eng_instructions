@@ -1,0 +1,6 @@
+machine_state_id,machine_state
+0,Maintenance
+1,Running
+2,Changeover
+3,Breakdown
+4,Idle

@@ -18,3 +18,14 @@ def test_read_parquet():
     assert result.isEmpty() is False
     result.show(10)
     session.stop()
+
+def test_read_csv():
+    session: SparkSession = make_csv_local()
+    manufacturing_factory_definition_dwh: ManufacturingFactoryDefinitionDWH = (
+        ManufacturingFactoryDefinitionDWH(FileType.CSV))
+    reader: ManufacturingFactoryReader = \
+        ManufacturingFactoryReader(session, manufacturing_factory_definition_dwh)
+    result: DataFrame = reader.read_batch()
+    assert result.isEmpty() is False
+    result.show(10)
+    session.stop()

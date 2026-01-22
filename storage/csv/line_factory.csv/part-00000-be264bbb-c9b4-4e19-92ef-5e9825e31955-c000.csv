@@ -1,0 +1,4 @@
+line_factory_id,line_natural_key,factory_natural_key
+0,Line-A,FRA-PLANT-01
+1,Line-C,FRA-PLANT-01
+2,Line-B,FRA-PLANT-01
