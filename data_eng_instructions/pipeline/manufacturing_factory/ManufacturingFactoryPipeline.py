@@ -10,6 +10,8 @@ from data_eng_instructions.constant.stubs import DEFAULT_ID, SHOW_COUNT
 from data_eng_instructions.filedefinition.FileType import FileType
 from data_eng_instructions.filedefinition.line_factory.dwh.LineFactoryDefinitionDWH import LineFactoryDefinitionDWH
 from data_eng_instructions.filedefinition.machinestate.dwh.MachineStateDefinitionDWH import MachineStateDefinitionDWH
+from data_eng_instructions.filedefinition.maintenancetype.dwh.MaintenanceTypeDefinitionDWH import \
+    MaintenanceTypeDefinitionDWH
 from data_eng_instructions.filedefinition.manufctoringfactory.source.ManufacturingFactoryDefinitionSource import \
     ManufacturingFactoryDefinitionSource
 from data_eng_instructions.filedefinition.operator.dwh.OperatorDefinitionDWH import OperatorDefinitionDWH
@@ -22,6 +24,7 @@ from data_eng_instructions.pipeline.Pipeline import Pipeline
 from data_eng_instructions.pipeline.PipelineParam import PipelineParam
 from data_eng_instructions.reader.LineFactoryReader import LineFactoryReader
 from data_eng_instructions.reader.MachineStateReader import MachineStateReader
+from data_eng_instructions.reader.MaintenanceTypeReader import MaintenanceTypeReader
 from data_eng_instructions.reader.ManufacturingFactoryReader import ManufacturingFactoryReader
 from data_eng_instructions.reader.OperatorReader import OperatorReader
 from data_eng_instructions.reader.OrderReader import OrderReader
@@ -84,6 +87,12 @@ class ManufacturingFactoryPipeline(Pipeline):
         op_reader: OperatorReader = OperatorReader(spark, op_definition)
         op_df: DataFrame = op_reader.read_from_storage()
         op_df.show(SHOW_COUNT)
+
+        print("Read maintenance types:")
+        mt_definition: MaintenanceTypeDefinitionDWH = MaintenanceTypeDefinitionDWH(file_type)
+        mt_reader: MaintenanceTypeReader = MaintenanceTypeReader(spark, mt_definition)
+        mt_df: DataFrame = mt_reader.read_from_storage()
+        mt_df.show(SHOW_COUNT)
 
         print("Read manufacturing factories:")
         mf_definition: ManufacturingFactoryDefinitionSource = ManufacturingFactoryDefinitionSource()
