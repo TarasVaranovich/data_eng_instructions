@@ -25,7 +25,7 @@ spark = SparkSession.builder \
     maintenance_type
     2 stage - operator
     3 stage - manufacturing_factory
-    4 stage - operating_period_defect, operating_period_downtime_reason
+    4 stage (could be executed in parallel)  - operating_period_defect, operating_period_downtime_reason
 """
 #pipeline_name: str = "maintenance_type"
 pipeline_name: str = "manufacturing_factory"
