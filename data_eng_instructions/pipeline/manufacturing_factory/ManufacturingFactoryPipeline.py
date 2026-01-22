@@ -216,6 +216,22 @@ class ManufacturingFactoryPipeline(Pipeline):
             )
         )
         mf_df_prd_ord_ms_ws_lf_sh_op.show(SHOW_COUNT)
+
+        print("Join maintenance types:")
+        mf_df_prd_ord_ms_ws_lf_sh_op_mt = (
+            mf_df_prd_ord_ms_ws_lf_sh_op.alias("mf")
+            .join(
+                mt_df.alias("joined"),
+                F.col("mf.maintenance_type") == F.col("joined.maintenance_type"),
+                "left"
+            )
+            .select(
+                *[F.col(f"mf.{c}") for c in mf_df_prd_ord_ms_ws_lf_sh_op.columns if c != "maintenance_type"],
+                F.coalesce(F.col("joined.maintenance_type_id"), F.lit(DEFAULT_ID)).alias("maintenance_type_id")
+            )
+        )
+        mf_df_prd_ord_ms_ws_lf_sh_op_mt.show(SHOW_COUNT)
+
         mf_df_prd_ord_ms_ws_lf_sh_op_indexed: DataFrame = \
             (mf_df_prd_ord_ms_ws_lf_sh_op
              .withColumn("operating_period_id", monotonically_increasing_id().cast(IntegerType())))
