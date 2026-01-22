@@ -24,11 +24,11 @@ Install necessary libraries:
 ```
 
 # Use-cases from document "Data_Eng_Instructions.pdf":
-Task 2: queries represented in the directory "tests/integration/sql" under the appropriate names.
-Task 3: 2. tests/unit/transform/manufactoring_factory_transform_test/test_filter_out_invalid_defects_definitions
-Task 3. Scope 3-4: 
-## data warehouse design represented in the file "dwh_model_v3"
-## implementation was done for the fact "manufacturing_factory_dataset" except dimensions downtime reason and defect. 
-## see "data_end_instructions/main" class as implementation
-## see "tests/*" directory containing necessary tests
-## see result data in directory "storage"
+Task 2: queries represented in the directory 'tests/integration/sql' under the appropriate names. <br>
+Task 3: 2. 'tests/unit/transform/manufactoring_factory_transform_test/test_filter_out_invalid_defects_definitions' <br>
+Task 3. Scope 3-4: <br>
+- data warehouse design represented in the file 'dwh_model_v3.jpg'
+- implementation was done for the fact 'manufacturing_factory_dataset' except dimensions downtime reason and defect. 
+- see 'data_end_instructions/main' class as implementation
+- see 'tests/*' directory containing necessary tests
+- see result data in directory "storage"
