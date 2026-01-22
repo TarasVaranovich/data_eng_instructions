@@ -34,3 +34,5 @@ add dataframes cleaning
 was stubed with -1 - but dementions
 
 adudit tables for each pipeline, CDC
+
+Reader in test
