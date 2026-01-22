@@ -32,3 +32,4 @@ Task 3. Scope 3-4: <br>
 - see 'data_end_instructions/main' class as implementation
 - see 'tests/*' directory containing necessary tests
 - see result data in directory "storage"
+- in order to check exported fact table use 'tests/integration/reader/manufactory_factory_fact_reader_test.py'
