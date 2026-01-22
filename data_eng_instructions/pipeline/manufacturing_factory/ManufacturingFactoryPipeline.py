@@ -151,5 +151,42 @@ class ManufacturingFactoryPipeline(Pipeline):
                 F.coalesce(F.col("joined.work_order_status_id"), F.lit(DEFAULT_ID)).alias("work_order_status_id")
             )
         )
-
         mf_df_prd_ord_ms_ws.show(SHOW_COUNT)
+
+        print("Join line factories:")
+        mf_df_prd_ord_ms_ws_lf = (
+            mf_df_prd_ord_ms_ws.alias("mf")
+            .join(
+                lf_df.alias("lf"),
+                (F.col("mf.line_id") == F.col("lf.line_natural_key")) &
+                (F.col("mf.factory_id") == F.col("lf.factory_natural_key")),
+                how="left"
+            )
+            .withColumn(
+                "line_factory_id",
+                F.coalesce(F.col("lf.line_factory_id"), F.lit(DEFAULT_ID))
+            )
+            .drop(
+                "line_natural_key",
+                "factory_natural_key",
+                "factory_id",
+                "line_id"
+            )
+        )
+
+        mf_df_prd_ord_ms_ws_lf.show(SHOW_COUNT)
+
+        print("Join shifts:")
+        mf_df_prd_ord_ms_ws_lf_sh = (
+            mf_df_prd_ord_ms_ws_lf.alias("mf")
+            .join(
+                sh_df.alias("joined"),
+                F.col("mf.shift") == F.col("joined.shift_name"),
+                "left"
+            )
+            .select(
+                *[F.col(f"mf.{c}") for c in mf_df_prd_ord_ms_ws_lf.columns if c != "shift"],
+                F.coalesce(F.col("joined.shift_id"), F.lit(DEFAULT_ID)).alias("shift_id")
+            )
+        )
+        mf_df_prd_ord_ms_ws_lf_sh.show(SHOW_COUNT)
