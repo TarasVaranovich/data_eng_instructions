@@ -30,3 +30,5 @@ assumptions. Mini-dimentios, skill-level (not extracted)
 
 write requirements explanations
 add dataframes cleaning
+
+was stubed with -1 - but dementions

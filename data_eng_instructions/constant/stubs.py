@@ -1,1 +1,2 @@
 DEFAULT_ID = -1
+SHOW_COUNT = 5

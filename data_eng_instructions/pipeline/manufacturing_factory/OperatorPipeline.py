@@ -111,7 +111,6 @@ class OperatorPipeline(Pipeline):
                        )
                        .withColumnRenamed("operator_id", "operator_natural_key")
                        .withColumn("operator_id", monotonically_increasing_id().cast(IntegerType())))
-        operator_lf.show(5)
 
         result = spark.createDataFrame(
             operator_lf.select(*[f.name for f in OPERATOR.fields]).rdd,

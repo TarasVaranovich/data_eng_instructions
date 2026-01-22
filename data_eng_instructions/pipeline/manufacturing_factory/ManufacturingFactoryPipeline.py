@@ -4,12 +4,13 @@ from pandas.core.interchange.dataframe_protocol import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.connect.session import SparkSession
 
-from data_eng_instructions.constant.stubs import DEFAULT_ID
+from data_eng_instructions.constant.stubs import DEFAULT_ID, SHOW_COUNT
 from data_eng_instructions.filedefinition.FileType import FileType
 from data_eng_instructions.filedefinition.line_factory.dwh.LineFactoryDefinitionDWH import LineFactoryDefinitionDWH
 from data_eng_instructions.filedefinition.machinestate.dwh.MachineStateDefinitionDWH import MachineStateDefinitionDWH
 from data_eng_instructions.filedefinition.manufctoringfactory.source.ManufacturingFactoryDefinitionSource import \
     ManufacturingFactoryDefinitionSource
+from data_eng_instructions.filedefinition.operator.dwh.OperatorDefinitionDWH import OperatorDefinitionDWH
 from data_eng_instructions.filedefinition.order.dwh.OrderDefinitionDWH import OrderDefinitionDWH
 from data_eng_instructions.filedefinition.product.dwh.ProductDefinitionDWH import ProductDefinitionDWH
 from data_eng_instructions.filedefinition.shift.dwh.ShiftDefinitionDWH import ShiftDefinitionDWH
@@ -26,7 +27,6 @@ from data_eng_instructions.reader.ProductReader import ProductReader
 from data_eng_instructions.reader.ShiftReder import ShiftReader
 from data_eng_instructions.reader.WorkOrderStatusReader import WorkOrderStatusReader
 from data_eng_instructions.transform.ManufacturingFactoryTransform import csv_to_type
-from data_eng_instructions.filedefinition.operator.dwh.OperatorDefinitionDWH import OperatorDefinitionDWH
 
 
 class ManufacturingFactoryPipeline(Pipeline):
@@ -36,69 +36,104 @@ class ManufacturingFactoryPipeline(Pipeline):
         super().__init__(param)
 
     def run(self) -> Any:
-        print("Running Defect Pipeline - Manufacturing Factory")
+        print("Running Manufacturing Factory pipeline.")
 
         file_type: FileType = self._param.get_result_type()
         spark: SparkSession = self._param.get_spark()
-
-        print("Read orders:")
-        order_definition: OrderDefinitionDWH = OrderDefinitionDWH(file_type)
-        order_reader: OrderReader = OrderReader(spark, order_definition)
-        order_df: DataFrame = order_reader.read_from_storage()
-        order_df.show(5)
 
         print("Read products:")
         product_definition: ProductDefinitionDWH = ProductDefinitionDWH(file_type)
         product_reader: ProductReader = ProductReader(spark, product_definition)
         product_df: DataFrame = product_reader.read_from_storage()
-        product_df.show(5)
+        product_df.show(SHOW_COUNT)
 
-        print("Read machine statuses:")
+        print("Read orders:")
+        order_definition: OrderDefinitionDWH = OrderDefinitionDWH(file_type)
+        order_reader: OrderReader = OrderReader(spark, order_definition)
+        order_df: DataFrame = order_reader.read_from_storage()
+        order_df.show(SHOW_COUNT)
+
+        print("Read machine states:")
         ms_definition: MachineStateDefinitionDWH = MachineStateDefinitionDWH(file_type)
         ms_reader: MachineStateReader = MachineStateReader(spark, ms_definition)
         ms_df: DataFrame = ms_reader.read_from_storage()
-        ms_df.show(5)
+        ms_df.show(SHOW_COUNT)
 
         print("Read work order statuses:")
         wos_definition: WorkOrderStatusDefinitionDWH = WorkOrderStatusDefinitionDWH(file_type)
         wos_reader: WorkOrderStatusReader = WorkOrderStatusReader(spark, wos_definition)
         wos_df: DataFrame = wos_reader.read_from_storage()
-        wos_df.show(5)
-
-        print("Read shifts:")
-        sh_definition: ShiftDefinitionDWH = ShiftDefinitionDWH(file_type)
-        sh_reader: ShiftReader = ShiftReader(spark, sh_definition)
-        sh_df: DataFrame = sh_reader.read_from_storage()
-        sh_df.show(5)
+        wos_df.show(SHOW_COUNT)
 
         print("Read line factories:")
         lf_definition: LineFactoryDefinitionDWH = LineFactoryDefinitionDWH(file_type)
         lf_reader: LineFactoryReader = LineFactoryReader(spark, lf_definition)
         lf_df: DataFrame = lf_reader.read_from_storage()
-        lf_df.show(5)
+        lf_df.show(SHOW_COUNT)
+
+        print("Read shifts:")
+        sh_definition: ShiftDefinitionDWH = ShiftDefinitionDWH(file_type)
+        sh_reader: ShiftReader = ShiftReader(spark, sh_definition)
+        sh_df: DataFrame = sh_reader.read_from_storage()
+        sh_df.show(SHOW_COUNT)
 
         print("Read operators:")
         op_definition: OperatorDefinitionDWH = OperatorDefinitionDWH(file_type)
         op_reader: OperatorReader = OperatorReader(spark, op_definition)
         op_df: DataFrame = op_reader.read_from_storage()
-        op_df.show(5)
-
+        op_df.show(SHOW_COUNT)
 
         print("Read manufacturing factories:")
         mf_definition: ManufacturingFactoryDefinitionSource = ManufacturingFactoryDefinitionSource()
         mf_df: DataFrame = (ManufacturingFactoryReader(spark, mf_definition)
                             .read_batch()).transform(csv_to_type)
 
-        mf_df_fact = (
+        mf_df.show(SHOW_COUNT)
+
+        print("Join products:")
+        mf_df_pr = (
             mf_df.alias("mf")
+            .join(
+                product_df.alias("pr"),
+                F.col("mf.product_id") == F.col("pr.product_natural_key"),
+                "left"
+            )
+            .select(
+                *[F.col(f"mf.{c}") for c in mf_df.columns if c != "product_id"],
+                F.coalesce(F.col("pr.product_id"), F.lit(DEFAULT_ID)).alias("product_id")
+            )
+        )
+
+        mf_df_pr.show(SHOW_COUNT)
+
+        print("Join orders:")
+        mf_df_prd_ord = (
+            mf_df_pr.alias("mf")
             .join(
                 order_df.alias("od"),
                 F.col("mf.order_id") == F.col("od.order_natural_key"),
-                how="left"
+                "left"
             )
-            .withColumn(
-                "order_id",
-                F.coalesce(F.col("od.order_id"), F.lit(DEFAULT_ID))
+            .select(
+                *[F.col(f"mf.{c}") for c in mf_df.columns if c != "order_id"],
+                F.coalesce(F.col("od.order_id"), F.lit(DEFAULT_ID)).alias("order_id")
             )
-            .drop("order_natural_key", "od.order_id")
         )
+
+        mf_df_prd_ord.show(SHOW_COUNT)
+
+        print("Join machine states:")
+        mf_df_prd_ord_ms = (
+            mf_df_prd_ord.alias("mf")
+            .join(
+                ms_df.alias("ms"),
+                F.col("mf.machine_state") == F.col("ms.machine_state"),
+                "left"
+            )
+            .select(
+                *[F.col(f"mf.{c}") for c in mf_df.columns if c != "machine_state"],
+                F.coalesce(F.col("ms.machine_state_id"), F.lit(DEFAULT_ID)).alias("machine_state_id")
+            )
+        )
+
+        mf_df_prd_ord_ms.show(SHOW_COUNT)
