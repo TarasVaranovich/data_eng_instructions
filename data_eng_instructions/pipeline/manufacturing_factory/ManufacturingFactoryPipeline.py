@@ -232,8 +232,9 @@ class ManufacturingFactoryPipeline(Pipeline):
         )
         mf_df_prd_ord_ms_ws_lf_sh_op_mt.show(SHOW_COUNT)
 
+        print("Indexing - identifiers assignation:")
         mf_df_prd_ord_ms_ws_lf_sh_op_indexed: DataFrame = \
-            (mf_df_prd_ord_ms_ws_lf_sh_op
+            (mf_df_prd_ord_ms_ws_lf_sh_op_mt
              .withColumn("operating_period_id", monotonically_increasing_id().cast(IntegerType())))
 
         print("Manufacturing factory indexed")

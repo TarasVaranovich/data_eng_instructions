@@ -1,7 +1,8 @@
-from pyspark.sql import DataFrame
+from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql.functions import *
 from pyspark.sql.types import *
 
+from data_eng_instructions.schema.dwh.ManufactoringFactory import MANUFACTURING_FACTORY_FACT
 from data_eng_instructions.schema.file.ManufacturingFactory import MANUFACTURING_FACTORY_CSV, MANUFACTURING_FACTORY
 
 
@@ -103,11 +104,38 @@ def filter_out_invalid_defects_definitions(dataframe: DataFrame) -> DataFrame:
     assert dataframe.schema == MANUFACTURING_FACTORY_CSV
     return dataframe.filter(~(col("defect_type").isNull() & (col("defects_count") > 0)))
 
+
 def to_fact(dataframe: DataFrame) -> DataFrame:
-    dataframe.drop("defect_type", "downtime_reason")
-    # result_df: DataFrame = spark.createDataFrame(
-    #     mf_df_prd_ord_ms_ws_lf_sh_op_indexed
-    #     .select(cols).rdd,
-    #     MANUFACTURING_FACTORY_FACT
-    # )
-    pass
+    spark: SparkSession = dataframe.sparkSession
+    cleaned_df: DataFrame = (
+        dataframe
+        .drop("defect_type", "defects_count", "downtime_reason")) \
+        .select(
+        "operating_period_id",
+        "line_factory_id",
+        "product_id",
+        "order_id",
+        "shift_id",
+        "machine_state_id",
+        "operator_id",
+        "work_order_status_id",
+        "timestamp",
+        "planned_qty",
+        "produced_qty",
+        "scrap_qty",
+        "cycle_time_s",
+        "oee",
+        "availability",
+        "performance",
+        "quality",
+        "maintenance_type_id",
+        "maintenance_due_date",
+        "vibration_mm_s",
+        "temperature_c",
+        "pressure_bar",
+        "energy_kwh"
+    )
+    return spark.createDataFrame(
+        cleaned_df.rdd,
+        MANUFACTURING_FACTORY_FACT
+    )
