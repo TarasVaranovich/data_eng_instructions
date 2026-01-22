@@ -94,13 +94,13 @@ class ManufacturingFactoryPipeline(Pipeline):
         mf_df_pr = (
             mf_df.alias("mf")
             .join(
-                product_df.alias("pr"),
-                F.col("mf.product_id") == F.col("pr.product_natural_key"),
+                product_df.alias("joined"),
+                F.col("mf.product_id") == F.col("joined.product_natural_key"),
                 "left"
             )
             .select(
                 *[F.col(f"mf.{c}") for c in mf_df.columns if c != "product_id"],
-                F.coalesce(F.col("pr.product_id"), F.lit(DEFAULT_ID)).alias("product_id")
+                F.coalesce(F.col("joined.product_id"), F.lit(DEFAULT_ID)).alias("product_id")
             )
         )
 
@@ -110,13 +110,13 @@ class ManufacturingFactoryPipeline(Pipeline):
         mf_df_prd_ord = (
             mf_df_pr.alias("mf")
             .join(
-                order_df.alias("od"),
-                F.col("mf.order_id") == F.col("od.order_natural_key"),
+                order_df.alias("joined"),
+                F.col("mf.order_id") == F.col("joined.order_natural_key"),
                 "left"
             )
             .select(
-                *[F.col(f"mf.{c}") for c in mf_df.columns if c != "order_id"],
-                F.coalesce(F.col("od.order_id"), F.lit(DEFAULT_ID)).alias("order_id")
+                *[F.col(f"mf.{c}") for c in mf_df_pr.columns if c != "order_id"],
+                F.coalesce(F.col("joined.order_id"), F.lit(DEFAULT_ID)).alias("order_id")
             )
         )
 
@@ -126,14 +126,30 @@ class ManufacturingFactoryPipeline(Pipeline):
         mf_df_prd_ord_ms = (
             mf_df_prd_ord.alias("mf")
             .join(
-                ms_df.alias("ms"),
-                F.col("mf.machine_state") == F.col("ms.machine_state"),
+                ms_df.alias("joined"),
+                F.col("mf.machine_state") == F.col("joined.machine_state"),
                 "left"
             )
             .select(
-                *[F.col(f"mf.{c}") for c in mf_df.columns if c != "machine_state"],
-                F.coalesce(F.col("ms.machine_state_id"), F.lit(DEFAULT_ID)).alias("machine_state_id")
+                *[F.col(f"mf.{c}") for c in mf_df_prd_ord.columns if c != "machine_state"],
+                F.coalesce(F.col("joined.machine_state_id"), F.lit(DEFAULT_ID)).alias("machine_state_id")
             )
         )
 
         mf_df_prd_ord_ms.show(SHOW_COUNT)
+
+        print("Join work order statuses:")
+        mf_df_prd_ord_ms_ws = (
+            mf_df_prd_ord_ms.alias("mf")
+            .join(
+                wos_df.alias("joined"),
+                F.col("mf.workorder_status") == F.col("joined.work_order_status"),
+                "left"
+            )
+            .select(
+                *[F.col(f"mf.{c}") for c in mf_df_prd_ord_ms.columns if c != "workorder_status"],
+                F.coalesce(F.col("joined.work_order_status_id"), F.lit(DEFAULT_ID)).alias("work_order_status_id")
+            )
+        )
+
+        mf_df_prd_ord_ms_ws.show(SHOW_COUNT)
