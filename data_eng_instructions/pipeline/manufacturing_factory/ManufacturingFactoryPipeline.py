@@ -190,3 +190,18 @@ class ManufacturingFactoryPipeline(Pipeline):
             )
         )
         mf_df_prd_ord_ms_ws_lf_sh.show(SHOW_COUNT)
+
+        print("Join operators:")
+        mf_df_prd_ord_ms_ws_lf_sh_op = (
+            mf_df_prd_ord_ms_ws_lf_sh.alias("mf")
+            .join(
+                op_df.alias("joined"),
+                F.col("mf.operator_id") == F.col("joined.operator_natural_key"),
+                "left"
+            )
+            .select(
+                *[F.col(f"mf.{c}") for c in mf_df_prd_ord_ms_ws_lf_sh.columns if c != "operator_id"],
+                F.coalesce(F.col("joined.operator_id"), F.lit(DEFAULT_ID)).alias("operator_id")
+            )
+        )
+        mf_df_prd_ord_ms_ws_lf_sh_op.show(SHOW_COUNT)
