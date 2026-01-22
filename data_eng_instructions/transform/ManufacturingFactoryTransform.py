@@ -102,3 +102,12 @@ def csv_to_type(dataframe: DataFrame) -> DataFrame:
 def filter_out_invalid_defects_definitions(dataframe: DataFrame) -> DataFrame:
     assert dataframe.schema == MANUFACTURING_FACTORY_CSV
     return dataframe.filter(~(col("defect_type").isNull() & (col("defects_count") > 0)))
+
+def to_fact(dataframe: DataFrame) -> DataFrame:
+    dataframe.drop("defect_type", "downtime_reason")
+    # result_df: DataFrame = spark.createDataFrame(
+    #     mf_df_prd_ord_ms_ws_lf_sh_op_indexed
+    #     .select(cols).rdd,
+    #     MANUFACTURING_FACTORY_FACT
+    # )
+    pass

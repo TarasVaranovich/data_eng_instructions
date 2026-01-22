@@ -3,6 +3,8 @@ from typing import Any
 from pandas.core.interchange.dataframe_protocol import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.connect.session import SparkSession
+from pyspark.sql.functions import monotonically_increasing_id
+from pyspark.sql.types import IntegerType
 
 from data_eng_instructions.constant.stubs import DEFAULT_ID, SHOW_COUNT
 from data_eng_instructions.filedefinition.FileType import FileType
@@ -26,7 +28,7 @@ from data_eng_instructions.reader.OrderReader import OrderReader
 from data_eng_instructions.reader.ProductReader import ProductReader
 from data_eng_instructions.reader.ShiftReder import ShiftReader
 from data_eng_instructions.reader.WorkOrderStatusReader import WorkOrderStatusReader
-from data_eng_instructions.transform.ManufacturingFactoryTransform import csv_to_type
+from data_eng_instructions.transform.ManufacturingFactoryTransform import csv_to_type, to_fact
 
 
 class ManufacturingFactoryPipeline(Pipeline):
@@ -205,3 +207,12 @@ class ManufacturingFactoryPipeline(Pipeline):
             )
         )
         mf_df_prd_ord_ms_ws_lf_sh_op.show(SHOW_COUNT)
+        mf_df_prd_ord_ms_ws_lf_sh_op_indexed: DataFrame = \
+            (mf_df_prd_ord_ms_ws_lf_sh_op
+             .withColumn("operating_period_id", monotonically_increasing_id().cast(IntegerType())))
+
+        print("Manufacturing factory indexed")
+        mf_df_prd_ord_ms_ws_lf_sh_op_indexed.show(5)
+        print("Result:")
+        result_df: DataFrame = mf_df_prd_ord_ms_ws_lf_sh_op_indexed.transform(to_fact)
+        result_df.show(5)

@@ -13,13 +13,13 @@ spark = SparkSession.builder \
 """
     Pipelines orchestration:
     1 stage (could be executed in parallel) - downtime_reason, product, order, machine_state, 
-        work_order_status, defect, line_factory, shift, team
+        work_order_status, defect, line_factory, shift, team, maintenance_type
     2 stage - operator
     3 stage - manufacturing_factory
     4 stage - operating_period_defect, operating_period_downtime_reason
 """
 #pipeline_name: str = "operator"
-pipeline_name: str = "manufacturing_factory"
+pipeline_name: str = "maintenance_type"
 param: PipelineParam = PipelineParam(spark, FileType.PARQUET)
 pipeline: Pipeline = PipelineResolver.resolve(pipeline_name, param)
 pipeline.run()
