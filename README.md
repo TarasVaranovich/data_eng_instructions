@@ -24,3 +24,9 @@ pip install "zstandard >= 0.25.0"
 
 TODO:
 simplifications: operator not related, many-to-many not related
+
+prof of concept project -> sdt1, sdt2 , sdt3. Partitioning, indexing etc..
+assumptions. Mini-dimentios, skill-level (not extracted)
+
+write requirements explanations
+add dataframes cleaning

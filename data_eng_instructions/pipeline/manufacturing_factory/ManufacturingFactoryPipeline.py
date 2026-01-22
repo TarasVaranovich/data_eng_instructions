@@ -20,11 +20,13 @@ from data_eng_instructions.pipeline.PipelineParam import PipelineParam
 from data_eng_instructions.reader.LineFactoryReader import LineFactoryReader
 from data_eng_instructions.reader.MachineStateReader import MachineStateReader
 from data_eng_instructions.reader.ManufacturingFactoryReader import ManufacturingFactoryReader
+from data_eng_instructions.reader.OperatorReader import OperatorReader
 from data_eng_instructions.reader.OrderReader import OrderReader
 from data_eng_instructions.reader.ProductReader import ProductReader
 from data_eng_instructions.reader.ShiftReder import ShiftReader
 from data_eng_instructions.reader.WorkOrderStatusReader import WorkOrderStatusReader
 from data_eng_instructions.transform.ManufacturingFactoryTransform import csv_to_type
+from data_eng_instructions.filedefinition.operator.dwh.OperatorDefinitionDWH import OperatorDefinitionDWH
 
 
 class ManufacturingFactoryPipeline(Pipeline):
@@ -74,6 +76,13 @@ class ManufacturingFactoryPipeline(Pipeline):
         lf_reader: LineFactoryReader = LineFactoryReader(spark, lf_definition)
         lf_df: DataFrame = lf_reader.read_from_storage()
         lf_df.show(5)
+
+        print("Read operators:")
+        op_definition: OperatorDefinitionDWH = OperatorDefinitionDWH(file_type)
+        op_reader: OperatorReader = OperatorReader(spark, op_definition)
+        op_df: DataFrame = op_reader.read_from_storage()
+        op_df.show(5)
+
 
         print("Read manufacturing factories:")
         mf_definition: ManufacturingFactoryDefinitionSource = ManufacturingFactoryDefinitionSource()

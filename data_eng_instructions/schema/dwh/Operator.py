@@ -2,7 +2,7 @@ from pyspark.sql.types import StructType, StructField, IntegerType, StringType, 
 
 OPERATOR = StructType([
     StructField("operator_id", IntegerType(), False),
-    StructField("operator_natural_key", IntegerType(), False),
+    StructField("operator_natural_key", StringType(), False),
     StructField("team_id", IntegerType(), False),
     StructField("primary_shift_id", IntegerType(), False),
     StructField("primary_line_factory_id", IntegerType(), False),
